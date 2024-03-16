@@ -32,26 +32,29 @@ class SteamSelenium:
             
     async def __aenter__(self):
         try:
-            options = webdriver.ChromeOptions()
-            options.add_argument('--headless')
-            options.add_argument("--enable-javascript")
-            options.add_argument("--allow-running-insecure-content")
-            options.add_argument("--disable-web-security")
-            # options.add_argument("--incognito")
-            options.add_argument("--disable-cache")
+            options = Options()
+            options.add_argument("--headless")
+            options.set_preference("javascript.enabled", True)
+            options.set_preference("security.insecure_field_warning.contextual.enabled", False)
+            options.set_preference("security.insecure_password.ui.enabled", False)
+            # options.set_preference("browser.privatebrowsing.autostart", True)
+            options.set_preference("browser.cache.disk.enable", False)
+            options.set_preference("browser.cache.memory.enable", False)
+            options.set_preference("browser.cache.offline.enable", False)
+            options.set_preference("network.http.use-cache", False)
+            options.set_preference("permissions.default.image", 2)  # 2 for block, 1 for allow
+            options.set_preference("dom.webnotifications.enabled", False)
+            options.set_preference("permissions.default.stylesheet", 2)  # 2 for block, 1 for allow
+
+            options.set_preference("general.useragent.override", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0")
 
             # Disable images
-            prefs = {"profile.managed_default_content_settings.images": 2, "profile.default_content_setting_values.notifications": 2, "profile.managed_default_content_settings.stylesheets": 2}
-            options.add_experimental_option("prefs", prefs)
-
-            options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)")
-            
-            driver = webdriver.Chrome(options=options)
+            driver = webdriver.Firefox(options=options)
 
             driver.get('https://steamcommunity.com/market/listings/730/AWP%20%7C%20Neo-Noir%20%28Field-Tested%29') 
             
             driver.delete_all_cookies()
-            driver.execute_script('window.localStorage.clear();')
+            driver.execute_script('localStorage.clear();')
             
             driver.add_cookie({'name': 'sessionid', 'value': self.sessionid})
             driver.add_cookie({'name': 'steamLoginSecure', 'value': self.steamLoginSecure})
