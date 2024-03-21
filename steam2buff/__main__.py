@@ -51,20 +51,19 @@ async def main_loop(steamSelenium, postgres):
         if last_entry is None:
             logger.error('Failed to get last entry from PostgreSQL')
         elif last_entry == last_entry_checked:
-            logger.info('No new entry')
+            time.sleep(0.25)
         elif last_entry_checked is None:
             last_entry_checked = last_entry
-            logger.info('First entry')
         else:
             last_entry_checked = last_entry
             
             logger.info('New entry {}'.format(last_entry_checked))
         
-            if last_entry_checked['currency'] == 'SOLD':
+            if last_entry_checked[3] == 'SOLD':
                 continue
             
-            url = last_entry_checked['link']
-            listing_id = last_entry_checked['id']
+            url = last_entry_checked[4]
+            listing_id = last_entry_checked[0]
             
             bought = await steamSelenium.open_url(url, listing_id)
             
@@ -72,8 +71,6 @@ async def main_loop(steamSelenium, postgres):
                 await notify('Steam2Buff', 'Item Bought!', True)
             else:
                 await notify('Steam2Buff', 'Item Not Bought!', False)
-            
-        time.sleep(0.2)
 
 async def main():
     try:
@@ -82,7 +79,7 @@ async def main():
                 sessionid=config['steam']['sessionid'],
                 steamLoginSecure=config['steam']['steamLoginSecure'],
             ) as steamSelenium, Postgres(
-                uri=config['postgres']['uri'],
+                request_interval=10
             ) as postgres:
                 await main_loop(steamSelenium, postgres)
             

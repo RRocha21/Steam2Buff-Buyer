@@ -33,7 +33,7 @@ class SteamSelenium:
     async def __aenter__(self):
         try:
             options = webdriver.ChromeOptions()
-            options.add_argument('--headless')
+            # options.add_argument('--headless')
             options.add_argument("--enable-javascript")
             options.add_argument("--allow-running-insecure-content")
             options.add_argument("--disable-web-security")
@@ -78,17 +78,42 @@ class SteamSelenium:
             self.driver.switch_to.window(self.driver.window_handles[0])
             
             try: 
-                element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'listing_{}'.format(listing_id))))
+                try: 
+                    element = WebDriverWait(self.driver, 2).until(EC.presence_of_element_located((By.ID, 'largeiteminfo_item_name')))
+                except TimeoutException:
+                    self.driver.execute_script("window.open('{}', '_blank');".format(url))
+            
+                    self.driver.switch_to.window(self.driver.window_handles[0])
+                    self.driver.close()
+                    self.driver.switch_to.window(self.driver.window_handles[0])
+                    element = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, 'largeiteminfo_item_name')))
+                    
+                try:
+                    element = WebDriverWait(self.driver, 2).until(EC.presence_of_element_located((By.ID, 'listing_{}'.format(listing_id))))
+                except TimeoutException:
+                    self.reload()
+                    element = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, 'listing_{}'.format(listing_id))))
                 
                 button_to_click = element.find_element(By.XPATH, './div[2]/div[1]/div[1]/a')
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
                 button_to_click.click()
                 
-                confirm_ssa = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'market_buynow_dialog_accept_ssa_container')))
+                confirm_ssa = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, 'market_buynow_dialog_accept_ssa_container')))
                 confirm_ssa_button = confirm_ssa.find_element(By.XPATH, './input')
-                confirm_ssa_button.click()
+
+                # Check if the button is already clicked
+                is_clicked = confirm_ssa_button.get_attribute('aria-pressed') == "true"
+
+                if is_clicked:
+                    print("The button is already clicked.")
+                else:
+                    print("The button is not clicked yet.")
+
+                # If you want to click the button if it's not already clicked, you can do so as follows:
+                if not is_clicked:
+                    confirm_ssa_button.click()
                 
-                confirm_buy = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'market_buynow_dialog_paymentinfo_bottomactions')))
+                confirm_buy = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, 'market_buynow_dialog_paymentinfo_bottomactions')))
                 confirm_buy_button = confirm_buy.find_element(By.XPATH, './a')
                 confirm_buy_button.click()
                 
