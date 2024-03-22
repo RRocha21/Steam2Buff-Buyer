@@ -1,23 +1,12 @@
 import asyncio
+import asyncpg_listen
+from steam2buff.provider.steamSelenium import SteamSelenium
+from steam2buff import logger, config
+from urllib.parse import unquote
+from win11toast import toast
 from datetime import datetime
 
-from steam2buff.provider.steamSelenium import SteamSelenium
-from steam2buff.provider.postgres import Postgres
-from steam2buff import logger, config
-
-import os
-
-from urllib.parse import unquote
-
-import random
-
-import time
-
-from urllib.parse import unquote
-
 import json
-
-from win11toast import toast
 
 last_entry_checked = None
 
@@ -42,46 +31,65 @@ async def toast_async(title, text, icon, app_id):
     future = loop.run_in_executor(None, lambda: toast(title, text, icon=icon, app_id=app_id))
     await future
 
-async def main_loop(steamSelenium, postgres):    
-    global last_entry_checked
-    logger.info('Start')
-    while True:
-        last_entry = await postgres.get_last_entry()
+async def handle_notifications(notification: asyncpg_listen.NotificationOrTimeout, steamSelenium: SteamSelenium) -> None:
+    
+
+    # check if the notification has a payload
+    if not hasattr(notification, 'payload'):
+        return
+    
+    notification_payload = notification.payload
+    notification_json = json.loads(notification_payload)
+    notification_data = notification_json.get('data')
+
+    url = notification_data['link']
+    listing_id = notification_data['id']
+    updated_at = notification_data['updatedat']
+    
+    if notification_data['currency'] == 'SOLD':
+        logger.info(f"Received SOLD notification for url: {url} and listing_id: {listing_id} at {updated_at}")
+        return
+    
+    logger.info(f"Received notification for url: {url} and listing_id: {listing_id} at {updated_at}")
+    
+    bought = await steamSelenium.open_url(url, listing_id)
+            
+    if bought:
+        await notify('Steam2Buff', 'Item Bought!', True)
+    else:
+        await notify('Steam2Buff', 'Item Not Bought!', False)
         
-        if last_entry is None:
-            logger.error('Failed to get last entry from PostgreSQL')
-        elif last_entry == last_entry_checked:
-            time.sleep(0.25)
-        elif last_entry_checked is None:
-            last_entry_checked = last_entry
-        else:
-            last_entry_checked = last_entry
-            
-            logger.info('New entry {}'.format(last_entry_checked))
-        
-            if last_entry_checked[3] == 'SOLD':
-                continue
-            
-            url = last_entry_checked[4]
-            listing_id = last_entry_checked[0]
-            
-            bought = await steamSelenium.open_url(url, listing_id)
-            
-            if bought:
-                await notify('Steam2Buff', 'Item Bought!', True)
-            else:
-                await notify('Steam2Buff', 'Item Not Bought!', False)
+    
+    logger.info(f"Notification payload: {notification_payload}")
+
+async def listen_for_changes(steamSelenium: SteamSelenium):
+    listener = asyncpg_listen.NotificationListener(
+        asyncpg_listen.connect_func(
+            user='postgres',
+            password='benfica10',
+            database='Buff_Steam',
+            host='192.168.3.29'
+        )
+    )
+    listener_task = asyncio.create_task(
+        listener.run(
+            {"steam2buff_table_changes": lambda notification: handle_notifications(notification, steamSelenium)},
+            policy=asyncpg_listen.ListenPolicy.LAST,
+            notification_timeout=30
+        )
+    )
+    try:
+        await listener_task
+    finally:
+        await listener.close()
 
 async def main():
     try:
-        while True:
-            async with SteamSelenium(
-                sessionid=config['steam']['sessionid'],
-                steamLoginSecure=config['steam']['steamLoginSecure'],
-            ) as steamSelenium, Postgres(
-                request_interval=10
-            ) as postgres:
-                await main_loop(steamSelenium, postgres)
+        async with SteamSelenium(
+            sessionid=config['steam']['sessionid'],
+            steamLoginSecure=config['steam']['steamLoginSecure'],
+        ) as steamSelenium:
+            await listen_for_changes(steamSelenium)
             
     except KeyboardInterrupt:
         exit('Bye~')

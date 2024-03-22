@@ -28,7 +28,7 @@
       }
     },
     "sessionid": "c3e898e038dfcceb259004eb",
-    "steamLoginSecure": "76561198262506391%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEVDMF8yNDIzQjNFRF85QTlGMiIsICJzdWIiOiAiNzY1NjExOTgyNjI1MDYzOTEiLCAiYXVkIjogWyAid2ViOmNvbW11bml0eSIgXSwgImV4cCI6IDE3MTEwNjIzMTUsICJuYmYiOiAxNzAyMzM0NDA2LCAiaWF0IjogMTcxMDk3NDQwNiwgImp0aSI6ICIwRUM4XzI0MjNCM0VBXzIxMzVCIiwgIm9hdCI6IDE3MTA5NTA1MTQsICJydF9leHAiOiAxNzI5MjEwNjMyLCAicGVyIjogMCwgImlwX3N1YmplY3QiOiAiMTQ0LjY0LjkuMTYyIiwgImlwX2NvbmZpcm1lciI6ICIxNDQuNjQuOS4xNjIiIH0.WgbJ6zDL75T8F-Zaoc4dkft5rscsZpIbRgnmPEW0OiQF_C6r7PBZ3PVY3wTXqz0idMRSJOtlUJ9WfBCwZpEeCg"
+    "steamLoginSecure": "76561198262506391%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEVDMF8yNDIzQjNFRF85QTlGMiIsICJzdWIiOiAiNzY1NjExOTgyNjI1MDYzOTEiLCAiYXVkIjogWyAid2ViOmNvbW11bml0eSIgXSwgImV4cCI6IDE3MTExOTc4MzgsICJuYmYiOiAxNzAyNDcxMzk5LCAiaWF0IjogMTcxMTExMTM5OSwgImp0aSI6ICIwRUM4XzI0MjY2NzI1XzUyMzlGIiwgIm9hdCI6IDE3MTA5NTA1MTQsICJydF9leHAiOiAxNzI5MjEwNjMyLCAicGVyIjogMCwgImlwX3N1YmplY3QiOiAiMTQ0LjY0LjkuMTYyIiwgImlwX2NvbmZpcm1lciI6ICIxNDQuNjQuOS4xNjIiIH0.-18GVmLxGRPq_tq7d55yYzCQ1Xs_LCb5oJjs5aFT0HPNlKnYfmm9d19Zq7EWpObLyC6OgOMmkxVejDdKgZlFAQ"
   },
   "mongo": {
     "uri": "mongodb+srv://RRocha21:benfica10@buff.umt3iuw.mongodb.net/?retryWrites=true&w=majority"
@@ -52,6 +52,6 @@
     "file_name": "Buff163-Skins"
   },
   "postgres": {
-    "uri": "postgresql://doadmin:AVNS_GRvfxsqSGM1kpyI0Gqr@db-steam-buff-bot-do-user-13097918-0.c.db.ondigitalocean.com:25061/Pool1"
+    "uri": "postgresql://postgres:benfica10@192.168.3.29/buff2steam"
   }
 }
