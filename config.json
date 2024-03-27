@@ -27,8 +27,8 @@
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
       }
     },
-    "sessionid": "c3e898e038dfcceb259004eb",
-    "steamLoginSecure": "76561198262506391%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEVDMF8yNDIzQjNFRF85QTlGMiIsICJzdWIiOiAiNzY1NjExOTgyNjI1MDYzOTEiLCAiYXVkIjogWyAid2ViOmNvbW11bml0eSIgXSwgImV4cCI6IDE3MTExOTc4MzgsICJuYmYiOiAxNzAyNDcxMzk5LCAiaWF0IjogMTcxMTExMTM5OSwgImp0aSI6ICIwRUM4XzI0MjY2NzI1XzUyMzlGIiwgIm9hdCI6IDE3MTA5NTA1MTQsICJydF9leHAiOiAxNzI5MjEwNjMyLCAicGVyIjogMCwgImlwX3N1YmplY3QiOiAiMTQ0LjY0LjkuMTYyIiwgImlwX2NvbmZpcm1lciI6ICIxNDQuNjQuOS4xNjIiIH0.-18GVmLxGRPq_tq7d55yYzCQ1Xs_LCb5oJjs5aFT0HPNlKnYfmm9d19Zq7EWpObLyC6OgOMmkxVejDdKgZlFAQ"
+    "sessionid": "8d1bbb235636aa6f47d8c2c1",
+    "steamLoginSecure": "76561198262506391%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEVDMF8yNDIzQjNFRF85QTlGMiIsICJzdWIiOiAiNzY1NjExOTgyNjI1MDYzOTEiLCAiYXVkIjogWyAid2ViOmNvbW11bml0eSIgXSwgImV4cCI6IDE3MTE2MTYxMDUsICJuYmYiOiAxNzAyODg4ODI4LCAiaWF0IjogMTcxMTUyODgyOCwgImp0aSI6ICIwRjAwXzI0MkNGMTMwX0Q1OTc2IiwgIm9hdCI6IDE3MTA5NTA1MTQsICJydF9leHAiOiAxNzI5MjEwNjMyLCAicGVyIjogMCwgImlwX3N1YmplY3QiOiAiMTQ0LjY0LjkuMTYyIiwgImlwX2NvbmZpcm1lciI6ICIxNDQuNjQuOS4xNjIiIH0.1FaIBYT_z1DQ894bxWspgJ9K8BImFBXQaskKfez9MwLIwsAMA6feqsBGEblOhkNWqkHsu5WhyKQ2d5zaRVoGAg"
   },
   "mongo": {
     "uri": "mongodb+srv://RRocha21:benfica10@buff.umt3iuw.mongodb.net/?retryWrites=true&w=majority"
